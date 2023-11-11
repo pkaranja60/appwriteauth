@@ -11,7 +11,7 @@ const APPWRITE_PROJECT_ID: string = Config.APPWRITE_PROJECT_ID!;
 type CreateUserAccount = {
   email: string;
   password: string;
-  username: string;
+  name: string;
 };
 
 type LoginUserAccount = {
@@ -31,18 +31,18 @@ class AppwriteService {
   }
 
   //create a new record of user inside in appwrite
-  async createAccount({ email, password, username }: CreateUserAccount) {
+  async createAccount({ email, password, name }: CreateUserAccount) {
     try {
       const userAccount = await this.account.create(
         ID.unique(),
         email,
         password,
-        username,
+        name,
       );
 
       if (userAccount) {
         // Todo: create login feature
-        return this.loginAccount({ email, password });
+        return this.login({ email, password });
       } else {
         return userAccount;
       }
@@ -59,7 +59,7 @@ class AppwriteService {
   }
 
   //login user account
-  async loginAccount({ email, password }: LoginUserAccount) {
+  async login({ email, password }: LoginUserAccount) {
     try {
       return await this.account.createEmailSession(email, password);
     } catch (error) {
@@ -76,7 +76,7 @@ class AppwriteService {
 
   async getCurrentUser() {
     try {
-      return await this.account.get;
+      return await this.account.get();
     } catch (error) {
       console.log('Appwrite service :: getCurrentAccount() ::' + error);
     }
