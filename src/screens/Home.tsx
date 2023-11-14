@@ -20,10 +20,10 @@ type userObj = {
 
 const Home = () => {
   const [userData, setUserData] = useState<userObj>();
-  const { appwrite, setIsLoggedIn } = useContext(AppwriteContext);
+  const { appwriteService, setIsLoggedIn } = useContext(AppwriteContext);
 
   const handleLogout = () => {
-    appwrite.logout().then(() => {
+    appwriteService.logout().then(() => {
       setIsLoggedIn(false);
       Toast.show({
         type: 'info',
@@ -35,7 +35,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    appwrite.getCurrentUser().then(response => {
+    appwriteService.getCurrentUser().then(response => {
       if (response) {
         const user: userObj = {
           name: response.name,
@@ -44,7 +44,7 @@ const Home = () => {
         setUserData(user);
       }
     });
-  }, [appwrite]);
+  }, [appwriteService]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -58,9 +58,7 @@ const Home = () => {
           }}
           resizeMode="contain"
         />
-        <Text style={styles.message}>
-          Build Fast. Scale Big. All in one Place.
-        </Text>
+        <Text>Build Fast. Scale Big. All in one Place.</Text>
         {userData && (
           <View style={styles.userContainer}>
             <Text style={styles.userDetails}>Name: {userData.name}</Text>
@@ -68,9 +66,7 @@ const Home = () => {
           </View>
         )}
       </View>
-      <TouchableOpacity onPress={handleLogout} style={styles.logout}>
-        Logout
-      </TouchableOpacity>
+      <TouchableOpacity onPress={handleLogout} style={styles.logout} />
     </SafeAreaView>
   );
 };
@@ -78,27 +74,12 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0B0D32',
+    justifyContent: 'center',
   },
-  welcomeContainer: {
-    padding: 12,
-
-    flex: 1,
-    alignItems: 'center',
-  },
-  message: {
-    fontSize: 26,
-    fontWeight: '500',
-    color: '#FFFFFF',
-  },
-  userContainer: {
-    marginTop: 24,
-  },
-  userDetails: {
-    fontSize: 20,
-    color: '#FFFFFF',
-  },
-  logout
+  welcomeContainer: {},
+  userContainer: {},
+  userDetails: {},
+  logout: {},
 });
 
 export default Home;
